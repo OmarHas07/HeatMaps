@@ -62,9 +62,63 @@ filtered_annotation.head(), len(filtered_gene_ids)
 ```
 
 
-#### Extracting each DEGs for each treatment from the excel files
+#### Extracting DEG lists for each treatment from the Excel files
 
-This function is made specifically because I have different datasets(comparisons) in the same files but different ex el sheet so I am just extracting each comaprison.
+This function is made specifically because I have different datasets(comparisons) in the same files but different Excel sheets so I am just extracting each comparison.
+
+You don't have to do it if you have your DEG lists in separate files. 
+
+```
+def process_file(file_path):
+    # Load the Excel file
+    workbook = openpyxl.load_workbook(file_path, read_only=True)
+
+    # Get the names of all the sheets in the file
+    sheet_names = workbook.sheetnames
+
+    # Create a dictionary to hold the data from each sheet
+    data_dict = {}
+
+    # Process each sheet
+    for sheet_name in sheet_names:
+        # Get the condition and time point from the sheet name
+        parts = sheet_name.split(" ")
+        condition = parts[0]
+        time_point = " ".join(parts[1:])  # Join the second and third parts to form the time point
+
+        # Load the sheet into a DataFrame
+        data = pd.read_excel(file_path, sheet_name=sheet_name)
+
+        # Skip empty sheets
+        if data.empty: # this is because I have some empty DEG lists 
+            continue
+
+        # Add the DataFrame to the dictionary
+        data_dict[(condition, time_point)] = data
+
+    return data_dict
+```
+
+Now that we established the function we can start importing the data
+
+```
+data_dict_DZ = process_file("/Users/omarhasannin/Library/CloudStorage/OneDrive-AuburnUniversity/AT DATA/RNA-Seq Data/Gene Ontology Analysis/Differential expression DZs.xlsx")
+
+(data_dict_DZ)  # Display the data for inspection
+
+# Process the second file: iP treatmetns
+data_dict_iP = process_file("/Users/omarhasannin/Library/CloudStorage/OneDrive-AuburnUniversity/AT DATA/RNA-Seq Data/Gene Ontology Analysis/Differential expression iP.xlsx")
+
+data_dict_iP  # Display the data for inspection
+
+
+# Process the second file: tZ treatments
+data_dict_tZ = process_file("/Users/omarhasannin/Library/CloudStorage/OneDrive-AuburnUniversity/AT DATA/RNA-Seq Data/Gene Ontology Analysis/Differential expression tZ.xlsx")
+
+data_dict_tZ
+```
+
+
 
 
 
