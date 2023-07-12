@@ -26,3 +26,45 @@ https://www.arabidopsis.org/download/index-auto.jsp?dir=%2Fdownload_files%2FGO_a
 Gene lists corresponding to each GO term were matched with the datasets, displaying only genes found within those datasets.
 Treatments exerting no gene regulation were excluded. 
 
+### Files Used: 
+
+* Differential expression DZs.xlsx
+* Differential expression iP.xlsx
+* Differential expression tZ.xlsx
+
+Each of these files contains data for Base form DZ, iP, or tZ and their N-conjugates at the four different time points. 
+
+
+## Getting Started 
+
+#### Importing required packages 
+
+```
+import openpyxl
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from itertools import product
+```
+
+The first step is loading the annotation file, in this walk-through I am going to work with the annotation file from TAIR. 
+
+```
+# Make sure your annotation files is in the working directory
+Functional_annotation = pd.read_csv('Functional Annotation.csv')
+Functional_annotation.columns = ['gene_id, 'GO'] # Adding column names
+gene_of_interest = ['chlorophyll catabolic process'] # Change it with whatever you want to compare from the annotation file
+
+# Obtaining just the genes of interests from the annotation file
+filtered_annotation = Functional_annotation[Functional_annotation['GO'].isin(gene_of_interest)] # ensure you've got the correct column name.
+filtered_gene_ids = filtered_annotation['gene_id'].unique()
+filtered_annotation.head(), len(filtered_gene_ids)
+```
+
+
+#### Extracting each DEGs for each treatment from the excel files
+
+This function is made specifically because I have different datasets(comparisons) in the same files but different ex el sheet so I am just extracting each comaprison.
+
+
+
