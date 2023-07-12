@@ -99,6 +99,15 @@ def process_file(file_path):
     return data_dict
 ```
 
+#### In case your data files are separate 
+
+Alternatively, if your data files are separate you can use the below code to import your data. 
+
+```
+filename = pd.read_csv(path_to_file)
+```
+
+
 Now that we established the function we can start importing the data
 
 ```
@@ -118,7 +127,22 @@ data_dict_tZ = process_file("/Users/omarhasannin/Library/CloudStorage/OneDrive-A
 data_dict_tZ
 ```
 
+#### In case your data files are separate 
+
+Alternatively, if your data files are separate you can use the below code to import your data. 
+
+```
+filename = pd.read_csv(path_to_file)
+```
+
+## Preparing Data for HeatMap
 
 
+```
+def prepare_data_for_heatmap(data_dict, gene_sets)
+  for (cytokinin, timepoint), df in data_dict.items()
+    df_filtered = df[df'gene_id'].isin(gene_sets)]
+    for _, row in filtered_df.iterrows():
+      fold_change_column = [col for col in df.columns if log2FoldChange' in col][0]
 
 
